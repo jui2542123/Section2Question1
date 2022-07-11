@@ -3,20 +3,27 @@ import { useState } from "react";
 
 function App() {
   let valid = "true";
-  let valid2 = "";
+  let valid2 = "true";
   let select_text = "";
 
   function update() {
     var select = document.getElementById("calc");
     var text = select.options[select.selectedIndex].text;
     select_text = text;
+
     calcu();
   }
 
   const [value, setValue] = useState("");
 
   const handleChange = (e) => {
+    if (e.target.value < 0) {
+      setValue((e.target.value = 1));
+    } else if (e.target.value !== 0) {
+      setValue(e.target.value);
+    }
     setValue(e.target.value);
+    console.log(e.target.value);
   };
 
   const fib = (num, count = 1, last = 0) => {
@@ -41,6 +48,8 @@ function App() {
   };
 
   function calcu() {
+    setValue(Math.round(value));
+    document.getElementById("numinput").value = value;
     if (select_text == "isPrime") {
       valid = prime(parseInt(value));
     }
@@ -57,8 +66,8 @@ function App() {
         <div class="item-a">
           <input
             className="input"
+            id="numinput"
             type="number"
-            placeholder="0"
             value={value}
             onChange={handleChange}
           />
